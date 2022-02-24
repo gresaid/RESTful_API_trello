@@ -11,11 +11,11 @@ interface RoleCreationAttrs {
 @Table({tableName: 'roles'})
 export class Role extends Model<Role, RoleCreationAttrs> {
 
-    @ApiProperty({example: '1', description: 'Уникальный идентификатор'})
+    @ApiProperty({example: '1', description: 'ID роли'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-    @ApiProperty({example: 'ADMIN', description: 'Уникальное Значение роли '})
+    @ApiProperty({example: 'ADMIN', description: 'Уникальное Значение роли'})
     @Column({type: DataType.STRING, unique: true, allowNull: false})
     value: string;
 
@@ -23,6 +23,6 @@ export class Role extends Model<Role, RoleCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     description: string;
 
-    @BelongsToMany(() => User, () => UserRoles)
+   @BelongsToMany(() => User, () => UserRoles)
     users: User[];
 }
