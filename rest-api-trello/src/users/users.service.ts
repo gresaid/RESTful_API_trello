@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { RolesService } from 'src/roles/roles.service';
+import { AddRoleDto } from './dto/add-role.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './users.model';
 
@@ -24,5 +25,13 @@ async getUserByEmail(email: string){
         const user = await this.userRepository.findOne({where:{email}, include:{all:true}})
         return user
 }
-
+async addRole(dto: AddRoleDto) {
+    const role = await this.roleService.getRoleByValue(dto.value);
+    const user = await this.userRepository.findByPk(dto.userId);
+    if (role&&user) {
+        await user.$add('role',role.id)
+        return dto;
+    }
+    throw new HttpException('Юзер/роль не найдены',HttpStatus.NOT_FOUND)
+}
 }

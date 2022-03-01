@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { Roles } from "src/auth/role-auth.decorator";
 import { RoleGuard } from "src/auth/roles.guard";
+import { AddRoleDto } from "./dto/add-role.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./users.model";
 import { UsersService } from "./users.service";
@@ -26,5 +27,14 @@ export class UsersController{
     @Get()
     getAll(){
         return this.usersService.getAllUsers();
+    }
+
+    @ApiOperation({summary:'Выдать роль'})
+    @ApiResponse({status: 200})
+    @Roles('ADMIN')
+    @UseGuards(RoleGuard)
+    @Post('/role')
+    addRole(@Body() dto:AddRoleDto){
+        return this.usersService.addRole(dto);
     }
 }
