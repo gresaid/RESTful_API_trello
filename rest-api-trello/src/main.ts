@@ -18,7 +18,9 @@ async function start() {
         .build();
     const document = SwaggerModule.createDocument(app,config);
     SwaggerModule.setup('/api/docs',app,document);
+    
     app.useGlobalPipes(new ValidationPipe())
+
     await app.listen (PORT, ()=> console.log('server was start on port', PORT))
 }       
 
